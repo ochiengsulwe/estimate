@@ -1,0 +1,80 @@
+#include "../headers/main.h"
+#include "../headers/fprtyps.h"
+#include "../headers/types.h"
+
+/**
+ * node_cost_update - computes a specific node's cost.
+ * @projectNode: the actual node to compute unit/node cost for.
+ * @ratioS: established ratios used in the computationals.
+ * Return: total node computational cost.
+ */
+double node_cost_update(proj **projectNode, ratio *ratioS)
+{
+	double nodeCost = 0.0;
+
+	if ((*projectNode)->computed == FALSE)
+		unit_sum(projectNode, ratioS, &nodeCost);
+	return (nodeCost);
+}
+
+/**
+ * unit_sum - adds up all node member units.
+ * @nod: the specific node to compute the sum.
+ * @rat: the node's ration distribution.
+ * @nCost: the cumulative node cost.
+ */
+void unit_sum(proj **nod, ratio *rat, double *nCost)
+{
+	*nCost = rat->a * (*nod)->info.salaryLevels[2].salary + rat->b *
+		(*nod)->info.salaryLevels[1].salary + rat->c *
+		(*nod)->info.salaryLevels[0].salary;
+}
+
+/**
+ * display_project_details - displays every project detail after computation.
+ * @project: the project to display information on.
+ * @projectCost: the cost of the project.
+ * @devNum: the total number of professionals involved in the project.
+ * @months: total project duration.
+ * @tProjectCost: total project cost within the duration.
+ */
+void display_project_details(proj **project, double *projectCost, int *devNum,
+		int *months, double *tProjectCost)
+{
+	proj *temp = *project;
+	int index = OFFONE, i;
+
+	clearScreen();
+	if (!temp)
+		printf("NO ITEM IN PROJECT LIST YET\n");
+	printf("--------------------------------------------------\n");
+	printf("\tPROJECT DETAILED INFORMATION\n");
+	printf("--------------------------------------------------\n");
+	printf("TOTAL MONTHS  [%d]\nTOTAL PROJECT COST [%.2f]\n", *months,
+			*tProjectCost);
+	printf("MONTHLY PROJECT COST [%.2f]\nTOTAL NUMBER OF PROFESSIONALS [%d]\n",
+			*projectCost, *devNum);
+	while (temp != NULL)
+	{
+		printf("==================================================\n");
+		printf("[%d].%sS | LEVEL = %s | NUMBER = %d |\n",
+				index++, temp->info.name,
+				temp->optLevel, temp->num);
+		printf("==================================================\n");
+		for (i = 0; i < SALARYLEVELS; i++)
+		{
+			printf("%s %s = %.2f\n",
+					temp->info.salaryLevels[i].level,
+					temp->info.name,
+					temp->info.salaryLevels[i].salary);
+		}
+		printf("\nUNIT COST IN PROJECT = %.2f\n", temp->nodeCost);
+		printf("PROFECIENCY LEVEL DISTRIBUTION\n");
+		printf("------------------------------------------\n");
+		printf("JUNIOR = %d\nMID-LEVEL = %d\nSENIOR = %d\n",
+				temp->nodeRatio.c, temp->nodeRatio.b,
+				temp->nodeRatio.a);
+		temp = temp->pointerNext;
+	}
+	printf("--------------------------------------------------\n");
+}
