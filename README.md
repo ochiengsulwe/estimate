@@ -171,8 +171,8 @@ adjust as the project goes along, to help in costa and/or time management.
 
 #### Example usage
 
-* `CREATE/UPDATE DATABASE - allows you to create a database.
-* `CREATE/UPDATE PROJECT - allows you to create a project.
+* `CREATE/UPDATE DATABASE` - allows you to create a database.
+* `CREATE/UPDATE PROJECT` - allows you to create a project.
 
 For more information on features, please refer to the source code and comments.
 
